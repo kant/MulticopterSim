@@ -38,7 +38,6 @@
 #include "VideoManager.hpp"
 #endif
 
-
 // A macro for simplifying the declaration of static meshes
 #define DECLARE_STATIC_MESH(structname, assetstr, objname)   \
     struct structname {                                             \
@@ -70,7 +69,8 @@ class MULTICOPTERSIM_API Vehicle : public MultirotorDynamics {
 
         void videoManagerStart(void)
         {
-            _videoManager = FVideoManager::create(_objects.renderTarget);
+            extern FVideoManager * createVideoManager(UTextureRenderTarget2D * cameraRenderTarget);
+            _videoManager = createVideoManager(_objects.renderTarget);
         }
 
         void videoManagerStop(void)

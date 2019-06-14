@@ -38,7 +38,7 @@ class FVideoManager : public FThreadedWorker {
     protected:
 
         // Constructor, called once on main thread
-        FVideoManager( UTextureRenderTarget2D * cameraRenderTarget) 
+        FVideoManager(UTextureRenderTarget2D * cameraRenderTarget) 
             : FThreadedWorker()
         {
             // Get the size of the render target
@@ -91,8 +91,5 @@ class FVideoManager : public FThreadedWorker {
         ~FVideoManager()
         {
         }
-
-        // Factory method implemented by your subclass
-        static FVideoManager * create(UTextureRenderTarget2D * cameraRenderTarget);
 
 }; // Class FVideoManager
