@@ -8,7 +8,7 @@
 
 #pragma once
 
-class Joystick {
+class MULTICOPTERSIM_API Joystick {
 
     private:
 
