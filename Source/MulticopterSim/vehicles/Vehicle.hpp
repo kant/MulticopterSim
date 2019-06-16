@@ -38,6 +38,12 @@
 #include "VideoManager.hpp"
 #endif
 
+#ifdef _WIN32
+#define SPRINTF sprintf_s
+#else
+#define SPRINTF sprintf
+#endif
+
 // A macro for simplifying the declaration of static meshes
 #define DECLARE_STATIC_MESH(structname, assetstr, objname)   \
     struct structname {                                             \
@@ -69,8 +75,7 @@ class MULTICOPTERSIM_API Vehicle : public MultirotorDynamics {
 
         void videoManagerStart(void)
         {
-            extern FVideoManager * createVideoManager(UTextureRenderTarget2D * cameraRenderTarget);
-            _videoManager = createVideoManager(_objects.renderTarget);
+            _videoManager = FVideoManager::create(_objects.renderTarget);
         }
 
         void videoManagerStop(void)
@@ -164,7 +169,7 @@ class MULTICOPTERSIM_API Vehicle : public MultirotorDynamics {
         static const FName makeName(const char * prefix, const uint8_t index)
         {
             char name[100];
-            sprintf_s(name, "%s%dMesh", prefix, index+1);
+            SPRINTF(name, "%s%dMesh", prefix, index+1);
             return FName(name);
         }
 
