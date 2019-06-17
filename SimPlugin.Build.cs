@@ -24,9 +24,7 @@ public class SimPlugin : ModuleRules
         string OpenCVPath = Path.Combine(ThirdPartyPath, "OpenCV");
 
         // Get Library Path
-        string LibPath = "";
-        bool isdebug = Target.Configuration == UnrealTargetConfiguration.Debug && Target.bDebugBuildsActuallyUseDebugCRT;
-        LibPath = Path.Combine(OpenCVPath, "lib");
+        string LibPath = Path.Combine(OpenCVPath, "lib");
 
         //Add Include path
         PublicIncludePaths.AddRange(new string[] { Path.Combine(OpenCVPath, "include") });
