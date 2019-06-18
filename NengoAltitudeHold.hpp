@@ -26,11 +26,13 @@ namespace hf {
             NengoPidController * _pidController;
 
             // Constants
-            static constexpr float KP = 1.00;
-            static constexpr float KD = 0.00;
-            static constexpr float KI = 0.00;
-            static constexpr float SIM_TIME = 0.001;
-            static const     int   N_NEURONS = 100;
+            static constexpr float KP               = 0.125;
+            static constexpr float KD               = 0.00;
+            static constexpr float KI               = 0.00;
+            static constexpr float SIM_TIME         = 0.001;
+            static const     int   N_NEURONS        = 200;
+            static constexpr float INTEGRAL_SYNAPSE = 0.01;
+            static constexpr float INTEGRAL_RADIUS  = 1.00;
 
             // Minimum altitude, set by constructor
             float _minAltitude = 0;
