@@ -20,10 +20,12 @@
 #include <hackflight.hpp>
 #include "SimReceiver.hpp"
 
-// PID controllers
+// standard PID controllers
 #include <pidcontrollers/level.hpp>
-#include <pidcontrollers/althold.hpp>
-#include <pidcontrollers/flowhold.hpp>
+#include <pidcontrollers/rate.hpp>
+
+// Nengo PID controller for altitude-hold
+#include "NengoAltitudeHold.hpp"
 
 // Mixer
 #include <mixers/quadxap.hpp>
@@ -35,7 +37,7 @@ class FNullFlightManager : public FFlightManager {
         // PID tuning
 
         // Rate
-        hf::Rate ratePid = hf::Rate(
+        hf::Rate _ratePid = hf::Rate(
                 0.01,	// Roll/Pitch P
                 0.01,	// Roll/Pitch I
                 0.01,	// Roll/Pitch D
@@ -44,17 +46,10 @@ class FNullFlightManager : public FFlightManager {
                 8.00);	// Demands to rate
 
         // Level
-        hf::Level level = hf::Level(0.1);
+        hf::Level _levelPid = hf::Level(0.1);
 
-        // Alt-hold
-        hf::AltitudeHold althold = hf::AltitudeHold(
-                5.00f,  // altHoldP
-                1.00f,  // altHoldVelP
-                0.01f,  // altHoldVelI
-                0.10f); // altHoldVelD
-
-        // Pos-hold (via simulated optical flow)
-        hf::FlowHold flowhold = hf::FlowHold(0.01);
+        // Nengo-based altitude hold
+        hf::NengoAltitudeHold * _altitudePid;
 
         // Main firmware
         hf::Hackflight _hackflight;
@@ -83,18 +78,17 @@ class FNullFlightManager : public FFlightManager {
             : FFlightManager(dynamics, initialLocation, initialRotation) 
         {
             // Start Hackflight firmware, indicating already armed
-            _hackflight.init(&_board, &_receiver, &_mixer, &ratePid, true);
+            _hackflight.init(&_board, &_receiver, &_mixer, &_ratePid, true);
 
             // Add simulated sensor suite
             _sensors = new SimSensors(_dynamics);
             _hackflight.addSensor(_sensors);
 
             // Add level PID controller for aux switch position 1
-            _hackflight.addPidController(&level, 1);
+            _hackflight.addPidController(&_levelPid, 1);
 
             // Add altitude-hold and position-hold PID controllers in switch position 2
-            _hackflight.addPidController(&althold, 2);    
-            _hackflight.addPidController(&flowhold, 2);    
+            //_hackflight.addPidController(&althold, 2);    
 
             // Start gimbal in center, medium Field-Of-View
             _gimbalRoll = 0;
