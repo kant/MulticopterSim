@@ -74,7 +74,7 @@ namespace hf {
                 if (!inBandCurr) return false;
 
                 // Compute control correction
-                correction = 1.0f;
+                _pidController->getCorrection(&_posTarget, &posActual, &correction);
 
                 return true;
             }
