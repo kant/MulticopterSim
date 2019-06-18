@@ -50,6 +50,8 @@ class FNullFlightManager : public FFlightManager {
 
         // Nengo-based altitude hold
         hf::NengoAltitudeHold * _altitudePid;
+        float ALT_KP = 1.0;
+        float ALT_KD = 1.0;
 
         // Main firmware
         hf::Hackflight _hackflight;
@@ -88,7 +90,7 @@ class FNullFlightManager : public FFlightManager {
             _hackflight.addPidController(&_levelPid, 1);
 
             // Add altitude-hold and position-hold PID controllers in switch position 2
-            _altitudePid = new hf::NengoAltitudeHold();
+            _altitudePid = new hf::NengoAltitudeHold(ALT_KP, ALT_KD);
             _hackflight.addPidController(_altitudePid, 2);    
 
             // Start gimbal in center, medium Field-Of-View
