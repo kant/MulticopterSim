@@ -21,38 +21,20 @@ namespace hf {
             NengoPidController * _pidController;
 
             // Arbitrary constants
-            const float WINDUP_MAX      = 0.40f;
             const float HOVER_THROTTLE  = 0.05f;
 
             // Minimum altitude, set by constructor
             float _minAltitude = 0;
 
-            // PID constants set by constructor
-            float _posP = 0;
-            float _velP = 0;
-            float _velI = 0;
-            float _velD = 0;
-
-            // Parameter to avoid integral windup
-            float _windupMax = 0;
-
             // Values modified in-flight
             float _posTarget = 0;
             bool  _inBandPrev = false;
-            float _lastError = 0;
-            float _integralError = 0;
             float _altitudeTarget = 0;
             float _previousTime = 0;
 
             bool inBand(float demand)
             {
                 return fabs(demand) < Receiver::STICK_DEADBAND; 
-            }
-
-            void resetErrors(void)
-            {
-                _lastError = 0;
-                _integralError = 0;
             }
 
             bool gotCorrection(float demand, float posActual, float velActual, float currentTime, float & correction)
@@ -67,7 +49,6 @@ namespace hf {
                 bool inBandCurr = inBand(demand);
                 if (inBandCurr && !_inBandPrev) {
                     _posTarget = posActual;
-                    resetErrors();
                 }
                 _inBandPrev = inBandCurr;
 
