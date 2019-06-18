@@ -8,8 +8,13 @@
 
 #pragma once
 
+// Hackflight
 #include <pidcontroller.hpp>
 
+// MulticopterSim
+#include <Debug.hpp>
+
+// SimPlugin
 #include "NengoPidController.hpp"
 
 namespace hf {
@@ -82,6 +87,8 @@ namespace hf {
 
             NengoAltitudeHold(float Kp, float Kd)
             {
+                debug("Starting Nengo ...");
+
                 _pidController = new NengoPidController(Kp, Kd);
             }
 

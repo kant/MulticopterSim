@@ -9,7 +9,6 @@
 #pragma once
 
 #include <board.hpp>
-#include <debugger.hpp>
 
 class SimBoard : public hf::Board {
 
