@@ -20,6 +20,14 @@ public class SimPlugin : ModuleRules
         PublicDependencyModuleNames.AddRange(new string[] 
                 { "Core", "CoreUObject", "Engine", "InputCore", "MulticopterSim" });
 
-        PrivateIncludePaths.Add(Environment.GetEnvironmentVariable("userprofile") + "\\Documents\\Arduino\\libraries\\Hackflight\\src");
+        string home = Environment.GetEnvironmentVariable("userprofile");
+
+        PrivateIncludePaths.Add(home + "\\Documents\\Arduino\\libraries\\Hackflight\\src");
+
+        string python = home + "\\AppData\\Local\\Programs\\Python\\Python36";
+
+        PrivateIncludePaths.Add(python + "\\include");
+
+        PublicLibraryPaths.Add(python + "\\libs");
     }
 }
