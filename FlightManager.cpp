@@ -88,7 +88,8 @@ class FNullFlightManager : public FFlightManager {
             _hackflight.addPidController(&_levelPid, 1);
 
             // Add altitude-hold and position-hold PID controllers in switch position 2
-            //_hackflight.addPidController(&althold, 2);    
+            _altitudePid = new hf::NengoAltitudeHold();
+            _hackflight.addPidController(_altitudePid, 2);    
 
             // Start gimbal in center, medium Field-Of-View
             _gimbalRoll = 0;
