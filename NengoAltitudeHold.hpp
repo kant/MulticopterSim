@@ -25,8 +25,12 @@ namespace hf {
 
             NengoPidController * _pidController;
 
-            // Arbitrary constants
-            const float HOVER_THROTTLE  = 0.05f;
+            // Constants
+            static constexpr float KP = 1.00;
+            static constexpr float KD = 0.00;
+            static constexpr float KI = 0.00;
+            static constexpr float SIM_TIME = 0.001;
+            static const     int   N_NEURONS = 100;
 
             // Minimum altitude, set by constructor
             float _minAltitude = 0;
@@ -75,7 +79,7 @@ namespace hf {
 
                 float correction = 0;
                 if (gotCorrection(demands.throttle, state.location[2], state.inertialVel[2], currentTime, correction)) {
-                    demands.throttle = correction + HOVER_THROTTLE;
+                    demands.throttle += correction;
                     return true;
                 }
 
@@ -85,12 +89,12 @@ namespace hf {
 
         public:
 
-            NengoAltitudeHold(float Kp, float Kd)
+            NengoAltitudeHold(void)
             {
                 debug("Starting Nengo ...");
 
-                _pidController = new NengoPidController(Kp, Kd);
-            }
+                _pidController = new NengoPidController(KP, KD, KI, 1, SIM_TIME, N_NEURONS);
+             }
 
     }; // class NengoAltitudeHold
 
