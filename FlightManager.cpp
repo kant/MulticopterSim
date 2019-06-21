@@ -1,7 +1,5 @@
 /*
-   MulticopterSim FlightManager class implementation using Hackflight
-
-   Just spins propellers
+   MulticopterSim FlightManager class implementation using Hackflight and Nengo
 
    Copyright(C) 2019 Simon D.Levy
 
