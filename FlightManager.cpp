@@ -28,7 +28,7 @@
 // Mixer
 #include <mixers/quadxap.hpp>
 
-class FNullFlightManager : public FFlightManager {
+class FNengoFlightManager : public FFlightManager {
 
     private:
 
@@ -72,7 +72,7 @@ class FNullFlightManager : public FFlightManager {
     public:
 
         // Constructor
-        FNullFlightManager(MultirotorDynamics * dynamics, FVector initialLocation, FRotator initialRotation) 
+        FNengoFlightManager(MultirotorDynamics * dynamics, FVector initialLocation, FRotator initialRotation) 
             : FFlightManager(dynamics, initialLocation, initialRotation) 
         {
             // Start Hackflight firmware, indicating already armed
@@ -95,7 +95,7 @@ class FNullFlightManager : public FFlightManager {
             _gimbalFOV = 90;
          }
 
-        virtual ~FNullFlightManager(void)
+        virtual ~FNengoFlightManager(void)
         {
             delete _sensors;
         }
@@ -134,11 +134,11 @@ class FNullFlightManager : public FFlightManager {
             fov =   _gimbalFOV;
         }
 
-}; // NullFlightManager
+}; // NengoFlightManager
 
 
 // Factory method for FlightManager class
 SIMPLUGIN_API FFlightManager * createFlightManager(MultirotorDynamics * dynamics, FVector initialLocation, FRotator initialRotation)
 {
-    return new FNullFlightManager(dynamics, initialLocation, initialRotation);
+    return new FNengoFlightManager(dynamics, initialLocation, initialRotation);
 }
