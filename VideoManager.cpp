@@ -16,9 +16,7 @@ class FExampleVideoManager : public FVideoManager {
 
         virtual void processImage(cv::Mat image) override
         {
-            cv::Mat flipped;
-            cv::flip(image, flipped, -1);
-            cv::imshow("MulticopterSim", flipped);
+            cv::imshow("MulticopterSim", image);
             cv::waitKey(1);
         }
 
