@@ -55,10 +55,10 @@ class FMatlabManager : public FFlightManager {
 
 			_motorServer->receiveData(motorvals, 8 * _motorCount);
 
-			double tmp = 99;
+			double tmp = 0;
 			_telemClient->sendData(&tmp, sizeof(double));
 
-			dbgprintf("%d", _count++);
+			//dbgprintf("%d", _count++);
 
         }
 
