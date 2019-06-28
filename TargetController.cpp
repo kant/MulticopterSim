@@ -22,7 +22,7 @@ class NullTargetController : public TargetController {
         }
 }; 
 
-SIMPLUGIN_API TargetController * createTargetController(void)
+FLIGHTMODULE_API TargetController * createTargetController(void)
 {
     return new NullTargetController();
 }
