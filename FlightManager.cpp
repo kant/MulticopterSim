@@ -8,14 +8,19 @@
 
 #include "../MulticopterSim/FlightManager.hpp"
 #include "sockets/UdpServerSocket.hpp"
+#include "sockets/UdpClientSocket.hpp"
 
 class FMatlabManager : public FFlightManager {
 
     private:
 
-        const short PORT = 5000;
+		const char * HOST = "127.0.0.1";
+        const short MOTOR_PORT = 5000;
+		const short TELEM_PORT = 5001;
 
         UdpServerSocket * _motorServer = NULL;
+		UdpClientSocket * _telemClient = NULL;
+
 
         uint32_t _count = 0;
 
@@ -24,7 +29,8 @@ class FMatlabManager : public FFlightManager {
         FMatlabManager(MultirotorDynamics * dynamics, FVector initialLocation, FRotator initialRotation) : 
             FFlightManager(dynamics, initialLocation, initialRotation)
         {
-            _motorServer = new UdpServerSocket(PORT);
+            _motorServer = new UdpServerSocket(MOTOR_PORT);
+			_telemClient = new UdpClientSocket(HOST, TELEM_PORT);
             _count = 0;
         }
 		
@@ -34,19 +40,26 @@ class FMatlabManager : public FFlightManager {
             delete _motorServer;
             _motorServer = NULL;
 
+			_telemClient->closeConnection();
+			delete _telemClient;
+			_telemClient = NULL;
+
         }
 
         virtual void update(const double time, const MultirotorDynamics::state_t & state, double * motorvals) override
         {
             // Avoid null-pointer exceptions at startup
-            if (!_motorServer) {
+            if (!_motorServer || !_telemClient) {
                 return;
             }
 
-            double tmp = 0;
-            _motorServer->receiveData((void *)&tmp, 8);
+			_motorServer->receiveData(motorvals, 8 * _motorCount);
 
-            dbgprintf("%f", tmp);
+			double tmp = 99;
+			_telemClient->sendData(&tmp, sizeof(double));
+
+			dbgprintf("%d", _count++);
+
         }
 
         virtual void getGimbal(float & roll, float &pitch, float & fov) override
