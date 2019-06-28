@@ -17,12 +17,15 @@ class FMatlabManager : public FFlightManager {
 
         UdpServerSocket * _motorServer = NULL;
 
+        uint32_t _count = 0;
+
     public:
 
         FMatlabManager(MultirotorDynamics * dynamics, FVector initialLocation, FRotator initialRotation) : 
             FFlightManager(dynamics, initialLocation, initialRotation)
         {
             _motorServer = new UdpServerSocket(PORT);
+            _count = 0;
         }
 		
         ~FMatlabManager()
@@ -40,13 +43,10 @@ class FMatlabManager : public FFlightManager {
                 return;
             }
 
-            int8_t tmp[4];
+            double tmp = 0;
+            _motorServer->receiveData((void *)&tmp, 8);
 
-            _motorServer->receiveData((void *)tmp, 4);
-
-            dbgprintf("%d %d %d %d", tmp[0], tmp[1], tmp[2], tmp[3]);
-
-            motorvals[0] = 0;
+            dbgprintf("%f", tmp);
         }
 
         virtual void getGimbal(float & roll, float &pitch, float & fov) override
