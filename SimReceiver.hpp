@@ -43,11 +43,6 @@ class SimReceiver : public hf::Receiver {
         return 1;
     }
 
-
-    // Simulate auxiliary switch via pushbuttons
-    uint8_t _buttonState;
-    const float buttonsToAux[3] = {-.1f, 0.f, .8f};
-
     public:
 
     SimReceiver(uint16_t updateFrequency=50)
@@ -56,7 +51,6 @@ class SimReceiver : public hf::Receiver {
 
         _deltaT = 1./updateFrequency;
         _previousTime = 0;
-        _buttonState = 0;
     }
 
     void begin(void)
@@ -78,28 +72,22 @@ class SimReceiver : public hf::Receiver {
 
     void readRawvals(void)
     {
-        // For game controllers, use buttons to fake up values in a three-position aux switch
-        if (!_joystick->isRcTransmitter()) {
-            rawvals[4] = buttonsToAux[_buttonState];
-        }
     }
 
     Joystick::error_t update(void)
     {
         // Joystick::poll() returns zero (okay) or a postive value (error)
-        Joystick::error_t pollResult = _joystick->poll(rawvals, _buttonState);
+        Joystick::error_t pollResult = _joystick->poll(rawvals);
 
         // In gimbal mode, grab pan,tilt from cyclic stick, then lock roll and pitch at zero
-        if (!pollResult && _joystick->inGimbalMode()) {
-
+        if (!pollResult && inGimbalMode()) {
 
             // Get FOV from throttle, gimbal roll and yaw from cyclic stick
-            _gimbalFOV   = 90 - rawvals[0] * 45;
+            _gimbalFOV   = 90 - rawvals[0] * 45 + .5; // .5 = saftey margin
             _gimbalRoll  = rawvals[1];
             _gimbalPitch = rawvals[2];
 
-
-            // Clam throttle, roll, and yaw to neutral values
+            // Clamp throttle, roll, and yaw to neutral values
             rawvals[0] = 0;
             rawvals[1] = 0;
             rawvals[2] = 0;
@@ -110,7 +98,7 @@ class SimReceiver : public hf::Receiver {
 
     bool inGimbalMode(void)
     {
-        return _joystick->inGimbalMode();
+        return rawvals[5] > AUX_THRESHOLD;
     }
 
     void getGimbal(float & roll, float & pitch, float & fov)

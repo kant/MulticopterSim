@@ -138,7 +138,7 @@ class FNengoFlightManager : public FFlightManager {
 
 
 // Factory method for FlightManager class
-SIMPLUGIN_API FFlightManager * createFlightManager(MultirotorDynamics * dynamics, FVector initialLocation, FRotator initialRotation)
+FLIGHTMODULE_API FFlightManager * createFlightManager(MultirotorDynamics * dynamics, FVector initialLocation, FRotator initialRotation)
 {
     return new FNengoFlightManager(dynamics, initialLocation, initialRotation);
 }
