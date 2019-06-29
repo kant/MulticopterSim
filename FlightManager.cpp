@@ -1,5 +1,5 @@
 /*
-   MulticopterSim FlightManager class implementation using Matlab over UDP
+   MulticopterSim FlightManager class implementation using UDP sockets 
 
    Copyright(C) 2019 Simon D.Levy
 
@@ -10,7 +10,7 @@
 #include "sockets/UdpServerSocket.hpp"
 #include "sockets/UdpClientSocket.hpp"
 
-class FMatlabManager : public FFlightManager {
+class FSocketManager : public FFlightManager {
 
     private:
 
@@ -26,7 +26,7 @@ class FMatlabManager : public FFlightManager {
 
     public:
 
-        FMatlabManager(MultirotorDynamics * dynamics, FVector initialLocation, FRotator initialRotation) : 
+        FSocketManager(MultirotorDynamics * dynamics, FVector initialLocation, FRotator initialRotation) : 
             FFlightManager(dynamics, initialLocation, initialRotation)
         {
             _motorServer = new UdpServerSocket(MOTOR_PORT);
@@ -34,7 +34,7 @@ class FMatlabManager : public FFlightManager {
             _count = 0;
         }
 		
-        ~FMatlabManager()
+        ~FSocketManager()
         {
             _motorServer->closeConnection();
             delete _motorServer;
@@ -70,11 +70,11 @@ class FMatlabManager : public FFlightManager {
             fov = 90;
         }
 
-}; // MatlabManager
+}; // FSocketManager
 
 
 // Factory method for FlightManager class
 FLIGHTMODULE_API FFlightManager * createFlightManager(MultirotorDynamics * dynamics, FVector initialLocation, FRotator initialRotation)
 {
-    return new FMatlabManager(dynamics, initialLocation, initialRotation);
+    return new FSocketManager(dynamics, initialLocation, initialRotation);
 }
