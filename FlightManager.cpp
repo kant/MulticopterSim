@@ -7,8 +7,8 @@
 */
 
 #include "../MulticopterSim/FlightManager.hpp"
-#include "sockets/UdpServerSocket.hpp"
-#include "sockets/UdpClientSocket.hpp"
+#include "../../Extras/sockets/UdpServerSocket.hpp"
+#include "../../Extras/sockets/UdpClientSocket.hpp"
 
 class FSocketManager : public FFlightManager {
 
@@ -23,6 +23,13 @@ class FSocketManager : public FFlightManager {
 
 
         uint32_t _count = 0;
+
+        static void copy(double * dst, uint8_t pos, const double * src, uint8_t n)
+        {
+            for (uint8_t i=0; i<n; ++i) {
+                dst[pos+i] = src[i];
+            }
+        }
 
     public:
 
@@ -53,12 +60,17 @@ class FSocketManager : public FFlightManager {
                 return;
             }
 
-			_motorServer->receiveData(motorvals, 8 * _motorCount);
+            _motorServer->receiveData(motorvals, 8*_motorCount);
 
-			double tmp = 0;
-			_telemClient->sendData(&tmp, sizeof(double));
+            // Time Gyro, Quat, Location
+            double telemetry[11] = {0};
 
-			//dbgprintf("%d", _count++);
+            telemetry[0] = time;
+            copy(telemetry, 1, state.angularVel, 3);
+            copy(telemetry, 4, state.quaternion, 4);
+            copy(telemetry, 8, state.pose.location, 3);
+
+            _telemClient->sendData(telemetry, sizeof(telemetry));
 
         }
 
