@@ -62,6 +62,11 @@ class FSocketManager : public FFlightManager {
 
             _motorServer->receiveData(motorvals, 8*_motorCount);
 
+            if (motorvals[0] == -1) {
+                dbgprintf("************** HALT *******************");
+                return;
+            }
+
             // Time Gyro, Quat, Location
             double telemetry[11] = {0};
 
