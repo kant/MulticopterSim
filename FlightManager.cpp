@@ -21,8 +21,9 @@ class FSocketManager : public FFlightManager {
         UdpServerSocket * _motorServer = NULL;
 		UdpClientSocket * _telemClient = NULL;
 
-
         uint32_t _count = 0;
+
+        bool _running = false;
 
         static void copy(double * dst, uint8_t pos, const double * src, uint8_t n)
         {
@@ -39,6 +40,7 @@ class FSocketManager : public FFlightManager {
             _motorServer = new UdpServerSocket(MOTOR_PORT);
 			_telemClient = new UdpClientSocket(HOST, TELEM_PORT);
             _count = 0;
+            _running = true;
         }
 		
         ~FSocketManager()
@@ -55,15 +57,18 @@ class FSocketManager : public FFlightManager {
 
         virtual void update(const double time, const MultirotorDynamics::state_t & state, double * motorvals) override
         {
-            // Avoid null-pointer exceptions at startup
-            if (!_motorServer || !_telemClient) {
+            // Avoid null-pointer exceptions at startup, freeze after control program halts
+            if (!_motorServer || !_telemClient || !_running) {
                 return;
             }
 
+            // Get motor values from control program
             _motorServer->receiveData(motorvals, 8*_motorCount);
 
+            // Control program sends a -1 to halt
             if (motorvals[0] == -1) {
-                dbgprintf("************** HALT *******************");
+                motorvals[0] = 0;
+                _running = false;
                 return;
             }
 
