@@ -100,7 +100,7 @@ class FNengoFlightManager : public FFlightManager {
             delete _sensors;
         }
 
-        virtual void update(const double time, const MultirotorDynamics::state_t & state, double * motorvals) override
+        virtual void getMotors(const double time, const MultirotorDynamics::state_t & state, double * motorvals) override
         {
             Joystick::error_t joystickError = _receiver.update();
 
@@ -123,7 +123,7 @@ class FNengoFlightManager : public FFlightManager {
                     _hackflight.update();
 
                     // Input deltaT, quat, gyro; output motor values
-                    _board.update(time, state.quaternion, state.angularVel, motorvals);
+                    _board.getMotors(time, state.quaternion, state.angularVel, motorvals, 4);
             }
         }
 

@@ -58,7 +58,7 @@ class SimBoard : public hf::Board {
 
         virtual ~SimBoard() { }
 
-        void update(const double time, const double quat[4], const double gyro[3], double * motors)
+        void getMotors(const double time, const double quat[4], const double gyro[3], double * motors, uint8_t motorCount)
         {
             _currentTime = time;
 
@@ -73,7 +73,7 @@ class SimBoard : public hf::Board {
             }
 
             // Copy out motors
-            for (uint8_t j=0; j<4; ++j) {
+            for (uint8_t j=0; j<motorCount; ++j) {
                 motors[j] = _motors[j];
             }
         }
