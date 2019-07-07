@@ -24,7 +24,7 @@ class FNullFlightManager : public FFlightManager {
         {
         }
 
-        virtual void update(const double time, const MultirotorDynamics::state_t & state, double * motorvals) override
+        virtual void getMotors(const double time, const MultirotorDynamics::state_t & state, double * motorvals) override
         {
             motorvals[0] = 0.1;
         }

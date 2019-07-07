@@ -35,7 +35,7 @@ class FExampleVideoManager : public FVideoManager {
 
 
 // Factory method for VideoManager class
-FLIGHTMODULE_API FVideoManager * createVideoManager(UTextureRenderTarget2D * cameraRenderTarget) 
+FLIGHTMODULE_API FVideoManager * createVideoManager(UTextureRenderTarget2D * cameraRenderTarget, uint8_t id) 
 {
     return new FExampleVideoManager(cameraRenderTarget);
 }
