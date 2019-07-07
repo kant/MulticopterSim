@@ -55,7 +55,7 @@ class FSocketManager : public FFlightManager {
 
         }
 
-        virtual void update(const double time, const MultirotorDynamics::state_t & state, double * motorvals) override
+        virtual void getMotors(const double time, const MultirotorDynamics::state_t & state, double * motorvals) override
         {
             // Avoid null-pointer exceptions at startup, freeze after control program halts
             if (!_motorServer || !_telemClient || !_running) {
