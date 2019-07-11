@@ -6,7 +6,7 @@
    MIT License
 */
 
-#include "../MulticopterSim/VideoManager.hpp"
+#include "../MainModule/VideoManager.hpp"
 
 #include <opencv2/highgui/highgui.hpp>
 

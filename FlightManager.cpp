@@ -8,7 +8,7 @@
    MIT License
 */
 
-#include "../MulticopterSim/FlightManager.hpp"
+#include "../MainModule/FlightManager.hpp"
 
 class FNullFlightManager : public FFlightManager {
 
