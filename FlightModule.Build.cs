@@ -18,7 +18,7 @@ public class FlightModule : ModuleRules
         PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 
         PublicDependencyModuleNames.AddRange(new string[] 
-                { "Core", "CoreUObject", "Engine", "InputCore", "MulticopterSim" });
+                { "Core", "CoreUObject", "Engine", "InputCore", "MainModule" });
 
         string home = Environment.GetEnvironmentVariable("userprofile");
 

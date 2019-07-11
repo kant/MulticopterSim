@@ -6,7 +6,7 @@
    MIT License
 */
 
-#include "../MulticopterSim/FlightManager.hpp"
+#include "../MainModule/FlightManager.hpp"
 
 #include "SimBoard.hpp"
 #include "SimSensors.hpp"
