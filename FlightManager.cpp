@@ -84,14 +84,6 @@ class FSocketManager : public FFlightManager {
 
         }
 
-        virtual void getGimbal(float & roll, float &pitch, float & fov) override
-        { 
-            // For now, we just keep camera pointing forward
-            roll = 0; 
-            pitch = 0; 
-            fov = 90;
-        }
-
 }; // FSocketManager
 
 
