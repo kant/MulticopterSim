@@ -4,7 +4,7 @@
    Copyright(C) 2019 Simon D.Levy
 
    MIT License
-*/
+   */
 
 #include "../MainModule/FlightManager.hpp"
 
@@ -65,9 +65,10 @@ class FNengoFlightManager : public FFlightManager {
         SimSensors * _sensors = NULL;
 
         // Gimbal axes
-        float _gimbalRoll = 0;
+        float _gimbalRoll  = 0;
         float _gimbalPitch = 0;
-        float _gimbalFOV = 0;
+        float _gimbalYaw   = 0;
+        float _gimbalFOV   = 0;
 
     public:
 
@@ -90,10 +91,11 @@ class FNengoFlightManager : public FFlightManager {
             _hackflight.addPidController(_altitudePid, 2);    
 
             // Start gimbal in center, medium Field-Of-View
-            _gimbalRoll = 0;
+            _gimbalRoll  = 0;
             _gimbalPitch = 0;
-            _gimbalFOV = 90;
-         }
+            _gimbalYaw   = 0;
+            _gimbalFOV   = 90;
+        }
 
         virtual ~FNengoFlightManager(void)
         {
@@ -117,7 +119,7 @@ class FNengoFlightManager : public FFlightManager {
                 default:
 
                     if (_receiver.inGimbalMode()) {
-                        _receiver.getGimbal(_gimbalRoll, _gimbalPitch, _gimbalFOV);
+                        _receiver.getGimbal(_gimbalRoll, _gimbalPitch, _gimbalYaw, _gimbalFOV);
                     }
 
                     _hackflight.update();
@@ -127,18 +129,26 @@ class FNengoFlightManager : public FFlightManager {
             }
         }
 
-        virtual void getGimbal(float & roll, float &pitch, float & fov) override
+        void getGimbal(float & roll, float &pitch, float & yaw, float & fov)
         {
-            roll =  _gimbalRoll;
+            roll  = _gimbalRoll;
             pitch = _gimbalPitch;
-            fov =   _gimbalFOV;
+            yaw   = _gimbalYaw;
+            fov   = _gimbalFOV;
         }
 
 }; // NengoFlightManager
 
+static FNengoFlightManager * _flightManager;
 
 // Factory method for FlightManager class
 FLIGHTMODULE_API FFlightManager * createFlightManager(MultirotorDynamics * dynamics, FVector initialLocation, FRotator initialRotation)
 {
-    return new FNengoFlightManager(dynamics, initialLocation, initialRotation);
+    _flightManager = new FNengoFlightManager(dynamics, initialLocation, initialRotation);
+    return _flightManager;
+}
+
+void getGimbalFromFlightManager(float & roll, float & pitch, float & yaw, float & fov) 
+{
+    _flightManager->getGimbal(roll, pitch, yaw, fov);
 }
