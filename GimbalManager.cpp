@@ -16,7 +16,7 @@ class FNullGimbalManager : public FGimbalManager {
     public:
 
         // Constructor
-        FNullGimbalManager(FFlightManager * flightManager) : FGimbalManager() 
+        FNullGimbalManager() : FGimbalManager() 
         {
         }
 
@@ -36,7 +36,7 @@ class FNullGimbalManager : public FGimbalManager {
 
 
 // Factory method for GimbalManager class
-FLIGHTMODULE_API FGimbalManager * createGimbalManager(FFlightManager * flightManager)
+FLIGHTMODULE_API FGimbalManager * createGimbalManager(void)
 {
-    return new FNullGimbalManager(flightManager);
+    return new FNullGimbalManager();
 }
