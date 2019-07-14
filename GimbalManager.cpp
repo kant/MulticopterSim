@@ -8,6 +8,7 @@
    MIT License
 */
 
+#include "../MainModule/FlightManager.hpp"
 #include "../MainModule/GimbalManager.hpp"
 
 class FNullGimbalManager : public FGimbalManager {
@@ -15,7 +16,7 @@ class FNullGimbalManager : public FGimbalManager {
     public:
 
         // Constructor
-        FNullGimbalManager() : FGimbalManager() 
+        FNullGimbalManager(FFlightManager * flightManager) : FGimbalManager() 
         {
         }
 
@@ -35,7 +36,7 @@ class FNullGimbalManager : public FGimbalManager {
 
 
 // Factory method for GimbalManager class
-FLIGHTMODULE_API FGimbalManager * createGimbalManager(void)
+FLIGHTMODULE_API FGimbalManager * createGimbalManager(FFlightManager * flightManager)
 {
-    return new FNullGimbalManager();
+    return new FNullGimbalManager(flightManager);
 }
