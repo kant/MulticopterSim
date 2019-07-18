@@ -1,7 +1,7 @@
 /*
    MulticopterSim FlightManager class implementation using a stub
 
-   Just spins propellers
+   Rises to a few meters then cuts motors
 
    Copyright(C) 2019 Simon D.Levy
 
@@ -27,7 +27,7 @@ class FNullFlightManager : public FFlightManager {
         virtual void getMotors(const double time, const MultirotorDynamics::state_t & state, double * motorvals) override
         {
             for (uint8_t i=0; i<_motorCount; ++i) {
-                motorvals[i] = 0.1;
+                motorvals[i] = state.pose.location[2] < -3 ? 0 : .6;
             }
         }
 
