@@ -12,12 +12,17 @@
 
 class FNullFlightManager : public FFlightManager {
 
+    private:
+
+        bool _running = false;
+
     public:
 
         // Constructor
         FNullFlightManager(MultirotorDynamics * dynamics, FVector initialLocation, FRotator initialRotation) 
             : FFlightManager(dynamics, initialLocation, initialRotation) 
         {
+            _running = true;
         }
 
         virtual ~FNullFlightManager(void)
@@ -26,8 +31,12 @@ class FNullFlightManager : public FFlightManager {
 
         virtual void getMotors(const double time, const MultirotorDynamics::state_t & state, double * motorvals) override
         {
+            if (state.pose.location[2] < -3) {
+                _running = false;
+            }
+
             for (uint8_t i=0; i<_motorCount; ++i) {
-                motorvals[i] = state.pose.location[2] < -3 ? 0 : .6;
+                motorvals[i] = _running ? 0.6 : 0;
             }
         }
 
