@@ -7,8 +7,7 @@
 */
 
 #include "../MainModule/FlightManager.hpp"
-#include "../../Extras/sockets/UdpServerSocket.hpp"
-#include "../../Extras/sockets/UdpClientSocket.hpp"
+#include "../../Extras/sockets/TwoWayUdp.hpp"
 
 class FSocketManager : public FFlightManager {
 
@@ -18,8 +17,7 @@ class FSocketManager : public FFlightManager {
         const short MOTOR_PORT = 5000;
 		const short TELEM_PORT = 5001;
 
-        UdpServerSocket * _motorServer = NULL;
-		UdpClientSocket * _telemClient = NULL;
+        TwoWayUdp * _twoWayUdp = NULL;
 
         uint32_t _count = 0;
 
@@ -37,51 +35,51 @@ class FSocketManager : public FFlightManager {
         FSocketManager(MultirotorDynamics * dynamics, FVector initialLocation, FRotator initialRotation) : 
             FFlightManager(dynamics, initialLocation, initialRotation)
         {
-            _motorServer = new UdpServerSocket(MOTOR_PORT);
-			_telemClient = new UdpClientSocket(HOST, TELEM_PORT);
+            _twoWayUdp = new TwoWayUdp(HOST, TELEM_PORT, MOTOR_PORT);
+
             _count = 0;
             _running = true;
         }
 		
         ~FSocketManager()
         {
-            _motorServer->closeConnection();
-            delete _motorServer;
-            _motorServer = NULL;
+            // Send a bogus time value to tell remote server we're done
+            double telemetry[10] = {0};
+            telemetry[0] = -1;
+			_twoWayUdp->send(telemetry, sizeof(telemetry));
 
-			_telemClient->closeConnection();
-			delete _telemClient;
-			_telemClient = NULL;
-
+            delete _twoWayUdp;
         }
 
         virtual void getMotors(const double time, const MultirotorDynamics::state_t & state, double * motorvals) override
         {
             // Avoid null-pointer exceptions at startup, freeze after control program halts
-            if (!_motorServer || !_telemClient || !_running) {
-                return;
-            }
-
-            // Get motor values from control program
-            _motorServer->receiveData(motorvals, 8*_motorCount);
-
-            // Control program sends a -1 to halt
-            if (motorvals[0] == -1) {
-                motorvals[0] = 0;
-                _running = false;
+            if (!_twoWayUdp|| !_running) {
                 return;
             }
 
             // Time Gyro, Quat, Location
-            double telemetry[11] = {0};
+            double telemetry[10] = {0};
 
             telemetry[0] = time;
+
             copy(telemetry, 1, state.angularVel, 3);
-            copy(telemetry, 4, state.quaternion, 4);
-            copy(telemetry, 8, state.pose.location, 3);
+            copy(telemetry, 4, state.bodyAccel, 3);
+            copy(telemetry, 7, state.pose.location, 3);
 
-            _telemClient->sendData(telemetry, sizeof(telemetry));
+			dbgprintf("%d: %f",	_count++, motorvals[0]);
 
+			_twoWayUdp->send(telemetry, sizeof(telemetry));
+
+			// Get motor values from control program
+			_twoWayUdp->receive(motorvals, 8 * _motorCount);
+
+			// Control program sends a -1 to halt
+			if (motorvals[0] == -1) {
+				motorvals[0] = 0;
+				_running = false;
+				return;
+			}
         }
 
 }; // FSocketManager
