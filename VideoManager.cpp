@@ -12,20 +12,25 @@
 
 class FExampleVideoManager : public FVideoManager {
 
+    private:
+
+        uint32_t _index;
+
     protected:
 
         virtual void processImage(cv::Mat image) override
         {
-            cv::imshow("MulticopterSim", image);
+            char windowName[100];
+            sprintf_s(windowName, "MulticopterSim%d", _index);
+            cv::imshow(windowName, image);
             cv::waitKey(1);
         }
 
     public:
 
-        FExampleVideoManager(UTextureRenderTarget2D * cameraRenderTarget) :
-            FVideoManager(cameraRenderTarget)
-
+        FExampleVideoManager(UTextureRenderTarget2D * cameraRenderTarget, uint32_t index) : FVideoManager(cameraRenderTarget)
         {
+            _index = index;
         }
 
         ~FExampleVideoManager()
@@ -33,9 +38,26 @@ class FExampleVideoManager : public FVideoManager {
         }
 }; 
 
+static FExampleVideoManager * _videoManager;
 
-// Factory method for VideoManager class
-FLIGHTMODULE_API FVideoManager * createVideoManager(UTextureRenderTarget2D * cameraRenderTarget, uint8_t id) 
+FLIGHTMODULE_API void videoManagersStart(UTextureRenderTarget2D * cameraRenderTarget1,UTextureRenderTarget2D * cameraRenderTarget2)
 {
-    return new FExampleVideoManager(cameraRenderTarget);
+    static uint32_t index;
+
+    _videoManager = new FExampleVideoManager(cameraRenderTarget1, index);
+
+    (void)cameraRenderTarget2;
+
+    index++;
+}
+
+FLIGHTMODULE_API void videoManagersStop(void)
+{
+    _videoManager = (FExampleVideoManager *)FThreadedWorker::stopThreadedWorker(_videoManager);
+
+}
+
+FLIGHTMODULE_API void videoManagersGrabImages(void)
+{
+    _videoManager->grabImage();
 }
