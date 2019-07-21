@@ -9,10 +9,18 @@
 */
 
 #include "../MainModule/target/TargetManager.hpp"
+#include <opencv2/highgui/highgui.hpp>
 
 class FLorenzTargetManager : public FTargetManager {
 
     private:
+
+        uint32_t _index = 0;
+
+        const uint16_t COLS = 346;
+        const uint16_t ROWS = 260;
+
+        cv::Mat _image;
 
         static constexpr float S = 10;
         static constexpr float R = 28;
@@ -34,13 +42,17 @@ class FLorenzTargetManager : public FTargetManager {
 
     public:
 
-        FLorenzTargetManager(void)
+        FLorenzTargetManager(uint32_t index)
         {
             _x = 0;
             _y = 1;
             _z = 1.05;
 
             _previousTime = 0;
+
+            _image = cv::Mat::zeros(ROWS, COLS, CV_8UC3);
+
+            _index = index;
         }
 
         virtual void computeLocation(double currentTime) override
@@ -60,11 +72,20 @@ class FLorenzTargetManager : public FTargetManager {
             _location.X = _x / SCALEDOWN + X_OFFSET;
             _location.Y = _y / SCALEDOWN + Y_OFFSET;
             _location.Z = _z / SCALEDOWN + Z_OFFSET;
+
+            char windowName[100];
+            sprintf_s(windowName, "MulticopterSim%d", _index);
+            cv::imshow(windowName, _image);
+            cv::waitKey(1);
         }
 }; 
 
 // Factory method for TargetManager class
 FLIGHTMODULE_API FTargetManager * createTargetManager(void)
 {
-    return new FLorenzTargetManager();
+    static uint32_t index;
+
+    return new FLorenzTargetManager(index);
+
+    index++;
 }
