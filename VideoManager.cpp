@@ -33,9 +33,22 @@ class FExampleVideoManager : public FVideoManager {
         }
 }; 
 
+static FExampleVideoManager * _videoManager;
 
-// Factory method for VideoManager class
-FLIGHTMODULE_API FVideoManager * createVideoManager(UTextureRenderTarget2D * cameraRenderTarget, uint8_t id) 
+FLIGHTMODULE_API void videoManagersStart(UTextureRenderTarget2D * cameraRenderTarget1,UTextureRenderTarget2D * cameraRenderTarget2)
 {
-    return new FExampleVideoManager(cameraRenderTarget);
+    _videoManager = new FExampleVideoManager(cameraRenderTarget1);
+
+    (void)cameraRenderTarget2;
+}
+
+FLIGHTMODULE_API void videoManagersStop(void)
+{
+    _videoManager = (FExampleVideoManager *)FThreadedWorker::stopThreadedWorker(_videoManager);
+
+}
+
+FLIGHTMODULE_API void videoManagersGrabImages(void)
+{
+    _videoManager->grabImage();
 }
