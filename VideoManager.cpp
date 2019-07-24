@@ -10,7 +10,7 @@
 
 #include <opencv2/highgui/highgui.hpp>
 
-class FExampleVideoManager : public FVideoManager {
+class ExampleVideoManager : public VideoManager {
 
     private:
 
@@ -28,23 +28,23 @@ class FExampleVideoManager : public FVideoManager {
 
     public:
 
-        FExampleVideoManager(UTextureRenderTarget2D * cameraRenderTarget, uint32_t index) : FVideoManager(cameraRenderTarget)
+        ExampleVideoManager(UTextureRenderTarget2D * cameraRenderTarget, uint32_t index) : VideoManager(cameraRenderTarget)
         {
             _index = index;
         }
 
-        ~FExampleVideoManager()
+        ~ExampleVideoManager()
         {
         }
 }; 
 
-static FExampleVideoManager * _videoManager;
+static ExampleVideoManager * _videoManager;
 
 FLIGHTMODULE_API void videoManagersStart(UTextureRenderTarget2D * cameraRenderTarget1,UTextureRenderTarget2D * cameraRenderTarget2)
 {
     static uint32_t index;
 
-    _videoManager = new FExampleVideoManager(cameraRenderTarget1, index);
+    _videoManager = new ExampleVideoManager(cameraRenderTarget1, index);
 
     (void)cameraRenderTarget2;
 
@@ -53,7 +53,8 @@ FLIGHTMODULE_API void videoManagersStart(UTextureRenderTarget2D * cameraRenderTa
 
 FLIGHTMODULE_API void videoManagersStop(void)
 {
-    _videoManager = (FExampleVideoManager *)FThreadedWorker::stopThreadedWorker(_videoManager);
+    delete _videoManager;
+    _videoManager = NULL;
 
 }
 
