@@ -1,16 +1,16 @@
 /*
-   MulticopterSim VideoManager class implementation
+   MulticopterSim OpenCVManager class implementation using a simple display
 
    Copyright(C) 2019 Simon D.Levy
 
    MIT License
 */
 
-#include "../MainModule/VideoManager.hpp"
+#include "../MainModule/OpenCVManager.hpp"
 
 #include <opencv2/highgui/highgui.hpp>
 
-class ExampleVideoManager : public VideoManager {
+class ExampleVideoManager : public OpenCVManager {
 
     private:
 
@@ -28,7 +28,7 @@ class ExampleVideoManager : public VideoManager {
 
     public:
 
-        ExampleVideoManager(UTextureRenderTarget2D * cameraRenderTarget, uint32_t index) : VideoManager(cameraRenderTarget)
+        ExampleVideoManager(UTextureRenderTarget2D * cameraRenderTarget, uint32_t index) : OpenCVManager(cameraRenderTarget)
         {
             _index = index;
         }
@@ -38,27 +38,11 @@ class ExampleVideoManager : public VideoManager {
         }
 }; 
 
-static ExampleVideoManager * _videoManager;
-
-FLIGHTMODULE_API void videoManagersStart(UTextureRenderTarget2D * cameraRenderTarget1,UTextureRenderTarget2D * cameraRenderTarget2)
+FLIGHTMODULE_API VideoManager * createVideoManager(UTextureRenderTarget2D * renderTarget, uint8_t id)
 {
-    static uint32_t index;
+    (void)id;
 
-    _videoManager = new ExampleVideoManager(cameraRenderTarget1, index);
+    static uint8_t index;
 
-    (void)cameraRenderTarget2;
-
-    index++;
-}
-
-FLIGHTMODULE_API void videoManagersStop(void)
-{
-    delete _videoManager;
-    _videoManager = NULL;
-
-}
-
-FLIGHTMODULE_API void videoManagersGrabImages(void)
-{
-    _videoManager->grabImage();
+    return new ExampleVideoManager(renderTarget, index++);
 }
