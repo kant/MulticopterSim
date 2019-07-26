@@ -1,7 +1,5 @@
 /*
-   MulticopterSim FlightManager class implementation using a stub
-
-   Rises to a few meters then cuts motors
+   MulticopterSim FlightManager class implementation using a simple takeoff-and-hold PID controller
 
    Copyright(C) 2019 Simon D.Levy
 
@@ -9,6 +7,7 @@
 */
 
 #include "../MainModule/FlightManager.hpp"
+#include "../MainModule/Debug.hpp"
 
 class FNullFlightManager : public FFlightManager {
 
@@ -69,7 +68,10 @@ class FNullFlightManager : public FFlightManager {
                 u = VEL_P * velError;
 
                 // Constrain correction to [0,1] to represent motor value
-                u = max(0, min(1, u));    
+                u = max(0, min(1, u));  
+
+                // Pause briefly to yield to other threads
+                FPlatformProcess::Sleep(0.001);
             }
 
             // Update for first difference

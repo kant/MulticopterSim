@@ -1,21 +1,36 @@
 /*
-   Null VideoManager routines
+ * Null video-management class for MulticopterSim
+ *
+ * Copyright (C) 2019 Simon D. Levy
+ *
+ * MIT License
+ */
 
-   Copyright(C) 2019 Simon D.Levy
+#pragma once
 
-   MIT License
-*/
+#include "../MainModule/VideoManager.hpp"
 
-FLIGHTMODULE_API void videoManagersStart(UTextureRenderTarget2D * cameraRenderTarget1,UTextureRenderTarget2D * cameraRenderTarget2)
+class NullVideoManager : public VideoManager {
+
+    protected:
+
+        virtual void processImageBytes(uint8_t * bytes) override
+        { 
+            (void)bytes;
+        }
+
+    public:
+
+        // Constructor, called once on main thread
+        NullVideoManager( UTextureRenderTarget2D * cameraRenderTarget, uint8_t id) 
+            : VideoManager(cameraRenderTarget)
+        {
+            (void)id;
+        }
+
+}; // Class NullVideoManager
+
+FLIGHTMODULE_API VideoManager * createVideoManager(UTextureRenderTarget2D * renderTarget, uint8_t id)
 {
-    (void)cameraRenderTarget1;
-    (void)cameraRenderTarget2;
-}
-
-FLIGHTMODULE_API void videoManagersStop(void)
-{
-}
-
-FLIGHTMODULE_API void videoManagersGrabImages(void)
-{
+    return new NullVideoManager(renderTarget, id);
 }
