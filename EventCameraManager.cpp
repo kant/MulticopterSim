@@ -1,22 +1,26 @@
 /*
-   TargetManager implementation
-
-   Follows a Lorenz attractor just for fun
+   Event camera simulation thread
 
    Copyright(C) 2019 Simon D.Levy
 
    MIT License
 */
 
+/*
+
 #include "../MainModule/target/TargetManager.hpp"
-#include "../MainModule/Debug.hpp"
+#include <opencv2/highgui/highgui.hpp>
 
 class FLorenzTargetManager : public FTargetManager {
 
     private:
 
+        uint32_t _index = 0;
+
         const uint16_t COLS = 346;
         const uint16_t ROWS = 260;
+
+        cv::Mat _image;
 
         static constexpr float S = 10;
         static constexpr float R = 28;
@@ -38,13 +42,17 @@ class FLorenzTargetManager : public FTargetManager {
 
     public:
 
-        FLorenzTargetManager(void)
+        FLorenzTargetManager(uint32_t index)
         {
             _x = 0;
             _y = 1;
             _z = 1.05;
 
             _previousTime = 0;
+
+            _image = cv::Mat::zeros(ROWS, COLS, CV_8UC3);
+
+            _index = index;
         }
 
         virtual void computeLocation(double currentTime) override
@@ -65,13 +73,22 @@ class FLorenzTargetManager : public FTargetManager {
             _location.Y = _y / SCALEDOWN + Y_OFFSET;
             _location.Z = _z / SCALEDOWN + Z_OFFSET;
 
-            // Pause briefly to yield to other threads
-            FPlatformProcess::Sleep(0.001);
+            char windowName[100];
+            sprintf_s(windowName, "MulticopterSim%d", _index);
+            cv::imshow(windowName, _image);
+            cv::waitKey(1);
         }
 }; 
 
 // Factory method for TargetManager class
 FLIGHTMODULE_API FTargetManager * createTargetManager(void)
 {
-    return new FLorenzTargetManager();
+    static uint32_t index;
+
+    return new FLorenzTargetManager(index);
+
+    index++;
 }
+
+
+*/
