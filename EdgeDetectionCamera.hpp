@@ -1,5 +1,5 @@
 /*
-   MulticopterSim OpenCVCamera subclass using simple display
+   MulticopterSim OpenCVCamera subclass using edge detection
 
    Copyright(C) 2019 Simon D. Levy
 
@@ -12,7 +12,7 @@
 
 #include <opencv2/highgui.hpp>
 
-class OpenCVDisplayCamera : public OpenCVCamera {
+class EdgeDetectionCamera : public OpenCVCamera {
 
     private:
 
@@ -32,7 +32,7 @@ class OpenCVDisplayCamera : public OpenCVCamera {
 
     public:
 
-        OpenCVDisplayCamera(void) 
+        EdgeDetectionCamera(void) 
             : OpenCVCamera(FOV, RES)
         {
         }

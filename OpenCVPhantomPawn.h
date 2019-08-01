@@ -10,7 +10,7 @@
 
 #include "../MainModule/vehicles/Phantom.h"
 
-#include "OpenCVDisplayCamera.hpp"
+#include "EdgeDetectionCamera.hpp"
 #include "NullFlightManager.hpp"
 
 #include "CoreMinimal.h"
@@ -28,7 +28,7 @@ class FLIGHTMODULE_API AOpenCVPhantomPawn : public APawn {
         // Helper class
         Phantom _phantom;
 
-        OpenCVDisplayCamera  _camera;
+        EdgeDetectionCamera  _camera;
 
     protected:
 
