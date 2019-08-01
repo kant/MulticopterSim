@@ -1,5 +1,5 @@
 /*
-   MulticopterSim FlightManager class implementation using Hackflight and Nengo
+   MulticopterSim FlightManager class implementation using Nengo
 
    Copyright(C) 2019 Simon D.Levy
 
@@ -7,6 +7,7 @@
    */
 
 #include "../MainModule/FlightManager.hpp"
+#include "../MainModule/Debug.hpp"
 
 #include "SimBoard.hpp"
 #include "SimSensors.hpp"
@@ -73,8 +74,8 @@ class FNengoFlightManager : public FFlightManager {
     public:
 
         // Constructor
-        FNengoFlightManager(MultirotorDynamics * dynamics, FVector initialLocation, FRotator initialRotation) 
-            : FFlightManager(dynamics, initialLocation, initialRotation) 
+        FNengoFlightManager(MultirotorDynamics * dynamics) 
+            : FFlightManager(dynamics) 
         {
             // Start Hackflight firmware, indicating already armed
             _hackflight.init(&_board, &_receiver, &_mixer, &_ratePid, true);
@@ -109,11 +110,11 @@ class FNengoFlightManager : public FFlightManager {
             switch (joystickError) {
 
                 case Joystick::ERROR_MISSING:
-                    dbgprintf("*** NO JOYSTICK DETECTED ***");
+                    debug("*** NO JOYSTICK DETECTED ***");
                     break;
 
                 case Joystick::ERROR_PRODUCT:
-                    dbgprintf("*** JOYSTICK NOT RECOGNIZED ***");
+                    debug("*** JOYSTICK NOT RECOGNIZED ***");
                     break;
 
                 default:
@@ -138,17 +139,3 @@ class FNengoFlightManager : public FFlightManager {
         }
 
 }; // NengoFlightManager
-
-static FNengoFlightManager * _flightManager;
-
-// Factory method for FlightManager class
-FLIGHTMODULE_API FFlightManager * createFlightManager(MultirotorDynamics * dynamics, FVector initialLocation, FRotator initialRotation)
-{
-    _flightManager = new FNengoFlightManager(dynamics, initialLocation, initialRotation);
-    return _flightManager;
-}
-
-void getGimbalFromFlightManager(float & roll, float & pitch, float & yaw, float & fov) 
-{
-    _flightManager->getGimbal(roll, pitch, yaw, fov);
-}
