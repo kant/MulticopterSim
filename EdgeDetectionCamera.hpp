@@ -23,10 +23,7 @@ class EdgeDetectionCamera : public OpenCVCamera {
 
         virtual void processImage(cv::Mat image) override
         {
-            char windowName[100];
-            //sprintf_s(windowName, "MulticopterSim%d", _windowIndex);
-            sprintf_s(windowName, "MulticopterSim");
-            cv::imshow(windowName, image);
+            cv::imshow("Edge Detection", image);
             cv::waitKey(1);
         }
 
