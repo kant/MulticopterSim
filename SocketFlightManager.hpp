@@ -9,7 +9,7 @@
 #include "../MainModule/FlightManager.hpp"
 #include "../../Extras/sockets/TwoWayUdp.hpp"
 
-class FSocketManager : public FFlightManager {
+class FSocketFlightManager : public FFlightManager {
 
     private:
 
@@ -32,8 +32,8 @@ class FSocketManager : public FFlightManager {
 
     public:
 
-        FSocketManager(MultirotorDynamics * dynamics, FVector initialLocation, FRotator initialRotation) : 
-            FFlightManager(dynamics, initialLocation, initialRotation)
+        FSocketFlightManager(MultirotorDynamics * dynamics) : 
+            FFlightManager(dynamics)
         {
             _twoWayUdp = new TwoWayUdp(HOST, TELEM_PORT, MOTOR_PORT);
 
@@ -41,7 +41,7 @@ class FSocketManager : public FFlightManager {
             _running = true;
         }
 		
-        ~FSocketManager()
+        ~FSocketFlightManager()
         {
             // Send a bogus time value to tell remote server we're done
             double telemetry[10] = {0};
@@ -67,8 +67,6 @@ class FSocketManager : public FFlightManager {
             copy(telemetry, 4, state.bodyAccel, 3);
             copy(telemetry, 7, state.pose.location, 3);
 
-			dbgprintf("%d: %f",	_count++, motorvals[0]);
-
 			_twoWayUdp->send(telemetry, sizeof(telemetry));
 
 			// Get motor values from control program
@@ -82,11 +80,4 @@ class FSocketManager : public FFlightManager {
 			}
         }
 
-}; // FSocketManager
-
-
-// Factory method for FlightManager class
-FLIGHTMODULE_API FFlightManager * createFlightManager(MultirotorDynamics * dynamics, FVector initialLocation, FRotator initialRotation)
-{
-    return new FSocketManager(dynamics, initialLocation, initialRotation);
-}
+}; // FSocketFlightManager
