@@ -8,6 +8,8 @@
    MIT License
 */
 
+#pragma once
+
 #include "../MainModule/FlightManager.hpp"
 
 class FHoverFlightManager : public FFlightManager {

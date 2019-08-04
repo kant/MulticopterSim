@@ -1,5 +1,5 @@
 /*
-   TargetManager implementation
+   TargetManager implementation 
 
    Follows a Lorenz attractor just for fun
 
@@ -8,8 +8,9 @@
    MIT License
 */
 
-#include "../MainModule/target/TargetManager.hpp"
-#include "../MainModule/Debug.hpp"
+#pragma once
+
+#include "../MainModule/TargetManager.hpp"
 
 class FLorenzTargetManager : public FTargetManager {
 
@@ -47,7 +48,7 @@ class FLorenzTargetManager : public FTargetManager {
             _previousTime = 0;
         }
 
-        virtual void computeLocation(double currentTime) override
+        virtual void computePose(double currentTime) override
         {
             double dt = (currentTime - _previousTime) / SLOWDOWN;
 
@@ -69,9 +70,3 @@ class FLorenzTargetManager : public FTargetManager {
             FPlatformProcess::Sleep(0.001);
         }
 }; 
-
-// Factory method for TargetManager class
-FLIGHTMODULE_API FTargetManager * createTargetManager(void)
-{
-    return new FLorenzTargetManager();
-}

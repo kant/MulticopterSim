@@ -6,6 +6,8 @@
    MIT License
 */
 
+#pragma once
+
 /*
 #include "../MainModule/ThreadedWorker.hpp"
 #include <opencv2/highgui/highgui.hpp>
