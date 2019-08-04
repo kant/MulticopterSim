@@ -28,15 +28,9 @@ class FHoverFlightManager : public FFlightManager {
         double _zprev = 0;
         double _tprev = 0;
 
-        static double min(double a, double b) 
-        {
-            return a < b ? a : b;
-        }
-
-        static double max(double a, double b) 
-        {
-            return a > b ? a : b;
-        }
+        // Utilities
+        static double min(double a, double b) { return a < b ? a : b; }
+        static double max(double a, double b) { return a > b ? a : b; }
 
     public:
 
@@ -56,27 +50,33 @@ class FHoverFlightManager : public FFlightManager {
         {
             double z = -state.pose.location[2]; // NED
 
-            // Compute dzdt setpoint and error
+            // Compute velocity target in proportion to altitude error
             double velTarget = (ALTITUDE_TARGET - z) * ALT_P;
 
+            // Velocity error will be zero on first iteration
             double velError = 0;
 
+            // Computer velocity error after first iteration
             if (_tprev > 0) {
-
                 double dt = time - _tprev;
                 double vel = (z-_zprev) / dt;
                 velError = velTarget - vel;
             }
 
+            // Store time and altitude for velocity tracking
             _tprev = time;
             _zprev = z;
 
+            // Compute motor demand using velocity PID control
             double u = VEL_P * velError;
 
+            // Constrain motor demand to [0,1]
             u = min(max(u, 0), 1);
 
+            // Wait a bit to yield to other threads
             FPlatformProcess::Sleep(.001);
 
+            // Set all motors to same demand value
             for (uint8_t i=0; i<_motorCount; ++i) {
                 motorvals[i] = u;
             }
