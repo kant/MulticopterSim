@@ -17,15 +17,14 @@ class EdgeDetectionCamera : public OpenCVCamera {
 
     private:
 
-        // Image params
-        static constexpr float FOV        = 135;
+        // Camera params
         static constexpr Resolution_t RES = RES_640x480;
+        static constexpr float FOV        = 135;
 
         // Edge-detection params
         static const uint8_t KERNEL_SIZE = 3;
         static const uint8_t LO_THRESH   = 50;
         static const uint8_t HI_THRESH   = 100;
-
 
     protected:
 
@@ -50,7 +49,7 @@ class EdgeDetectionCamera : public OpenCVCamera {
     public:
 
         EdgeDetectionCamera(void) 
-            : OpenCVCamera(FOV, RES)
+            : OpenCVCamera(RES, FOV)
         {
         }
 
