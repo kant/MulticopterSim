@@ -49,7 +49,7 @@ class EdgeDetectionCamera : public OpenCVCamera {
     public:
 
         EdgeDetectionCamera(void) 
-            : OpenCVCamera(RES, FOV)
+            : OpenCVCamera(FOV, RES)
         {
         }
 
