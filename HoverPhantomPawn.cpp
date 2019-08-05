@@ -7,6 +7,7 @@
 */
 
 #include "HoverPhantomPawn.h"
+#include "TargetPawn.h"
 
 AHoverPhantomPawn::AHoverPhantomPawn()
 {
@@ -25,6 +26,8 @@ void AHoverPhantomPawn::BeginPlay()
 {
     _phantom.BeginPlay(new FHoverFlightManager(&_phantom.dynamics));
 
+    UGameplayStatics::GetAllActorsOfClass(this->GetWorld(), ATargetPawn::StaticClass(), FoundActors);
+
     Super::BeginPlay();
 }
 
@@ -39,6 +42,8 @@ void AHoverPhantomPawn::EndPlay(const EEndPlayReason::Type EndPlayReason)
 void AHoverPhantomPawn::Tick(float DeltaSeconds)
 {
     _phantom.Tick();
+
+    debug("%d", FoundActors.Num());
 
     Super::Tick(DeltaSeconds);
 }

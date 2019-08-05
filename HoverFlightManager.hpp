@@ -80,6 +80,7 @@ class FHoverFlightManager : public FFlightManager {
             for (uint8_t i=0; i<_motorCount; ++i) {
                 motorvals[i] = u;
             }
+
         }
 
 }; // HoverFlightManager

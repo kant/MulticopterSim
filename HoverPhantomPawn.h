@@ -11,6 +11,7 @@
 #include "../MainModule/vehicles/Phantom.h"
 
 #include "HoverFlightManager.hpp"
+#include "TargetPawn.h"
 
 #include "CoreMinimal.h"
 #include "GameFramework/Pawn.h"
@@ -26,6 +27,8 @@ class FLIGHTMODULE_API AHoverPhantomPawn : public APawn {
 
         // Helper class
         Phantom _phantom;
+
+         TArray<AActor*> FoundActors;
 
     protected:
 
