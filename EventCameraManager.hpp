@@ -8,18 +8,20 @@
 
 #pragma once
 
-#include "../MainModule/ThreadedWorker.hpp"
+#include "../MainModule/ThreadedManager.hpp"
+#include "TargetPawn.h"
 
-class FEventCameraManager : public FThreadedWorker {
+class FEventCameraManager : public FThreadedManager {
 
     private:
 
-        APawn * _vehiclePawn = NULL;
-        APawn * _targetPawn = NULL;
+        class AEventCameraPawn * _vehiclePawn = NULL;
+        class ATargetPawn * _targetPawn = NULL;
 
     public:
 
-        FEventCameraManager(APawn * vehiclePawn, APawn * targetPawn)
+        FEventCameraManager(class AEventCameraPawn * vehiclePawn, class ATargetPawn * targetPawn)
+            : FThreadedManager()
         {
             _vehiclePawn = vehiclePawn;
             _targetPawn  = targetPawn;
@@ -27,5 +29,6 @@ class FEventCameraManager : public FThreadedWorker {
 
         void performTask(double currentTime)
         {
+            debug("%p %p", _vehiclePawn, _targetPawn);
         }
 }; 

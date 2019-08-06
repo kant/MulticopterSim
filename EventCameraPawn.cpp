@@ -15,7 +15,7 @@ AEventCameraPawn::AEventCameraPawn()
 
     _cameraImage = cv::Mat::zeros(CAMERA_ROWS, CAMERA_COLS, CV_8UC3);
 
-    _targetPawn = NULL;
+    _eventCameraManager = NULL;
 }
 
 void AEventCameraPawn::PostInitializeComponents()
@@ -39,7 +39,7 @@ void AEventCameraPawn::BeginPlay()
         debug("No TargetPawn object found in scene");
     }
     else {
-        _targetPawn = (ATargetPawn *)foundActors[0];
+        _eventCameraManager = new FEventCameraManager(this, (ATargetPawn *)foundActors[0]);
     }
 
     Super::BeginPlay();
