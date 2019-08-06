@@ -10,6 +10,13 @@
 
 class Davis346 {
 
+    private:
+
+        // Field of view, assuming a lens with 4.5mm focal length. See:
+        // https://inivation.com/support/hardware/davis346/#computations-of-field-of-view
+        static constexpr double FOV_H = 70.8;
+        static constexpr double FOV_V = 56.2;
+
     public:
         
         // Simplified AER event structure, based on
