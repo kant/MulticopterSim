@@ -8,14 +8,10 @@
 
 #pragma once
 
+#include <queue>
+using namespace std;
+
 class Davis346 {
-
-    private:
-
-        // Field of view, assuming a lens with 4.5mm focal length. See:
-        // https://inivation.com/support/hardware/davis346/#computations-of-field-of-view
-        static constexpr double FOV_H = 70.8;
-        static constexpr double FOV_V = 56.2;
 
     public:
         
@@ -30,6 +26,17 @@ class Davis346 {
 
         } event_t;
 
+    private:
+
+        // Field of view, assuming a lens with 4.5mm focal length. See:
+        // https://inivation.com/support/hardware/davis346/#computations-of-field-of-view
+        static constexpr double FOV_H = 70.8;
+        static constexpr double FOV_V = 56.2;
+
+        queue<event_t> _eventq;
+
+    public:
+        
         Davis346(void)
         {
         }
@@ -38,4 +45,10 @@ class Davis346 {
         {
         }
 
+        event_t dequeueEvent(void)
+        {
+            event_t event = _eventq.front();
+            _eventq.pop();
+            return event;
+        }
 }; 
