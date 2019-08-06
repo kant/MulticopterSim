@@ -1,22 +1,24 @@
 /*
-* Class implementation for Phantom pawn in MulticopterSim
+* Class implementation for pawn using simulated event camera
 *
 * Copyright (C) 2018 Simon D. Levy
 *
 * MIT License
 */
 
-#include "HoverPhantomPawn.h"
+#include "EventCameraPawn.h"
 #include "TargetPawn.h"
 
-AHoverPhantomPawn::AHoverPhantomPawn()
+AEventCameraPawn::AEventCameraPawn()
 {
     _phantom.build(this);
+
+    _cameraImage = cv::Mat::zeros(CAMERA_ROWS, CAMERA_COLS, CV_8UC3);
 
     _targetPawn = NULL;
 }
 
-void AHoverPhantomPawn::PostInitializeComponents()
+void AEventCameraPawn::PostInitializeComponents()
 {
     _phantom.PostInitializeComponents();
 
@@ -24,7 +26,7 @@ void AHoverPhantomPawn::PostInitializeComponents()
 }
 
 // Called when the game starts or when spawned
-void AHoverPhantomPawn::BeginPlay()
+void AEventCameraPawn::BeginPlay()
 {
     _phantom.BeginPlay(new FHoverFlightManager(&_phantom.dynamics));
 
@@ -43,7 +45,7 @@ void AHoverPhantomPawn::BeginPlay()
     Super::BeginPlay();
 }
 
-void AHoverPhantomPawn::EndPlay(const EEndPlayReason::Type EndPlayReason)
+void AEventCameraPawn::EndPlay(const EEndPlayReason::Type EndPlayReason)
 {
     _phantom.EndPlay();
 
@@ -51,11 +53,12 @@ void AHoverPhantomPawn::EndPlay(const EEndPlayReason::Type EndPlayReason)
 }
 
 // Called automatically on main thread
-void AHoverPhantomPawn::Tick(float DeltaSeconds)
+void AEventCameraPawn::Tick(float DeltaSeconds)
 {
     _phantom.Tick();
 
-    debug("%p", _targetPawn);
+    cv::imshow("EventCamera", _cameraImage);
+    cv::waitKey(1);
 
     Super::Tick(DeltaSeconds);
 }

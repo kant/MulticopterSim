@@ -1,5 +1,5 @@
 /*
-* Class declaration for pawn class using stubbed flight manager
+* Class declaration for pawn class using a simulated event camera
 *
 * Copyright (C) 2019 Simon D. Levy
 *
@@ -13,13 +13,15 @@
 #include "HoverFlightManager.hpp"
 #include "TargetPawn.h"
 
+#include <opencv2/highgui/highgui.hpp>
+
 #include "CoreMinimal.h"
 #include "GameFramework/Pawn.h"
 
-#include "HoverPhantomPawn.generated.h"
+#include "EventCameraPawn.generated.h"
 
 UCLASS(Config=Game)
-class FLIGHTMODULE_API AHoverPhantomPawn : public APawn {
+class FLIGHTMODULE_API AEventCameraPawn : public APawn {
 
     private:
 
@@ -29,6 +31,13 @@ class FLIGHTMODULE_API AHoverPhantomPawn : public APawn {
         Phantom _phantom;
 
         ATargetPawn * _targetPawn = NULL;
+
+        // For displaying camera events
+
+        const uint16_t CAMERA_COLS = 346;
+        const uint16_t CAMERA_ROWS = 260;
+
+        cv::Mat _cameraImage;
 
     protected:
 
@@ -46,6 +55,6 @@ class FLIGHTMODULE_API AHoverPhantomPawn : public APawn {
 
     public:	
 
-        AHoverPhantomPawn();
+        AEventCameraPawn();
 
-}; // AHoverPhantomPawn
+}; // AEventCameraPawn
