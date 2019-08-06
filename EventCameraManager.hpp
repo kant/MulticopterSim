@@ -12,10 +12,17 @@
 
 class FEventCameraManager : public FThreadedWorker {
 
+    private:
+
+        APawn * _vehiclePawn = NULL;
+        APawn * _targetPawn = NULL;
+
     public:
 
-        FEventCameraManager(void)
+        FEventCameraManager(APawn * vehiclePawn, APawn * targetPawn)
         {
+            _vehiclePawn = vehiclePawn;
+            _targetPawn  = targetPawn;
         }
 
         void performTask(double currentTime)

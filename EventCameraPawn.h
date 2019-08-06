@@ -11,6 +11,7 @@
 #include "../MainModule/vehicles/Phantom.h"
 
 #include "HoverFlightManager.hpp"
+#include "EventCameraManager.hpp"
 #include "TargetPawn.h"
 
 #include <opencv2/highgui/highgui.hpp>
@@ -30,7 +31,7 @@ class FLIGHTMODULE_API AEventCameraPawn : public APawn {
         // Helper class
         Phantom _phantom;
 
-        ATargetPawn * _targetPawn = NULL;
+        FEventCameraManager * _eventCameraManager = NULL;
 
         // For displaying camera events
 
