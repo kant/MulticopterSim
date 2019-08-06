@@ -10,6 +10,7 @@
 
 #include "../MainModule/ThreadedManager.hpp"
 #include "TargetPawn.h"
+#include "Davis346Sim.hpp"
 
 class FEventCameraManager : public FThreadedManager {
 
@@ -17,6 +18,8 @@ class FEventCameraManager : public FThreadedManager {
 
         APawn * _vehiclePawn = NULL;
         ATargetPawn * _targetPawn = NULL;
+
+        Davis346 davis;
 
         static FVector getLocation(APawn * pawn)
         {
