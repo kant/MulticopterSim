@@ -18,6 +18,11 @@ class FEventCameraManager : public FThreadedManager {
         APawn * _vehiclePawn = NULL;
         ATargetPawn * _targetPawn = NULL;
 
+        static FVector getLocation(APawn * pawn)
+        {
+            return pawn->GetActorLocation() / 100; // cm => m
+        }
+
     public:
 
         FEventCameraManager(APawn * vehiclePawn, ATargetPawn * targetPawn)
@@ -29,6 +34,11 @@ class FEventCameraManager : public FThreadedManager {
 
         void performTask(double currentTime)
         {
-            debug("%p %p", _vehiclePawn, _targetPawn);
+			FVector vehicleLocation = getLocation(_vehiclePawn);
+			FVector targetLocation = getLocation(_targetPawn);
+
+			debug("vehicle: %+3.3f %+3.3f %+3.3f    target: %+3.3f %+3.3f %+3.3f",
+				vehicleLocation.X, vehicleLocation.Y, vehicleLocation.Z,
+				targetLocation.X, targetLocation.Y, targetLocation.Z);
         }
 }; 
