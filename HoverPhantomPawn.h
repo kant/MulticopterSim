@@ -28,7 +28,7 @@ class FLIGHTMODULE_API AHoverPhantomPawn : public APawn {
         // Helper class
         Phantom _phantom;
 
-         TArray<AActor*> FoundActors;
+        ATargetPawn * _targetPawn = NULL;
 
     protected:
 

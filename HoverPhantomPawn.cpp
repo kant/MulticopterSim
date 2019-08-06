@@ -12,6 +12,8 @@
 AHoverPhantomPawn::AHoverPhantomPawn()
 {
     _phantom.build(this);
+
+    _targetPawn = NULL;
 }
 
 void AHoverPhantomPawn::PostInitializeComponents()
@@ -26,7 +28,17 @@ void AHoverPhantomPawn::BeginPlay()
 {
     _phantom.BeginPlay(new FHoverFlightManager(&_phantom.dynamics));
 
-    UGameplayStatics::GetAllActorsOfClass(this->GetWorld(), ATargetPawn::StaticClass(), FoundActors);
+    // Get all target actors in scene 
+    TArray<AActor*> foundActors;
+    UGameplayStatics::GetAllActorsOfClass(this->GetWorld(), ATargetPawn::StaticClass(), foundActors);
+
+    // Use the first one found
+    if (foundActors.Num() == 0) {
+        debug("No TargetPawn object found in scene");
+    }
+    else {
+        _targetPawn = (ATargetPawn *)foundActors[0];
+    }
 
     Super::BeginPlay();
 }
@@ -43,7 +55,7 @@ void AHoverPhantomPawn::Tick(float DeltaSeconds)
 {
     _phantom.Tick();
 
-    debug("%d", FoundActors.Num());
+    debug("%p", _targetPawn);
 
     Super::Tick(DeltaSeconds);
 }
