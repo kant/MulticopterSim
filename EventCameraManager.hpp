@@ -15,12 +15,12 @@ class FEventCameraManager : public FThreadedManager {
 
     private:
 
-        class AEventCameraPawn * _vehiclePawn = NULL;
-        class ATargetPawn * _targetPawn = NULL;
+        APawn * _vehiclePawn = NULL;
+        ATargetPawn * _targetPawn = NULL;
 
     public:
 
-        FEventCameraManager(class AEventCameraPawn * vehiclePawn, class ATargetPawn * targetPawn)
+        FEventCameraManager(APawn * vehiclePawn, ATargetPawn * targetPawn)
             : FThreadedManager()
         {
             _vehiclePawn = vehiclePawn;
