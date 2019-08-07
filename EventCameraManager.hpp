@@ -39,9 +39,12 @@ class FEventCameraManager : public FThreadedManager {
         {
 			FVector vehicleLocation = getLocation(_vehiclePawn);
 			FVector targetLocation = getLocation(_targetPawn);
+            FBox targetBox = _targetPawn->getBoundingBox();
+            FVector targetSize = targetBox.GetSize() / 100;
 
-			debug("vehicle: %+3.3f %+3.3f %+3.3f    target: %+3.3f %+3.3f %+3.3f",
+			debug("vehicle: %+3.3f %+3.3f %+3.3f    target: %+3.3f %+3.3f %+3.3f size = %3.3f %3.3f %3.3f",
 				vehicleLocation.X, vehicleLocation.Y, vehicleLocation.Z,
-				targetLocation.X, targetLocation.Y, targetLocation.Z);
+				targetLocation.X, targetLocation.Y, targetLocation.Z,
+                targetSize.X, targetSize.Y, targetSize.Z);
         }
 }; 
