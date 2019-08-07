@@ -26,7 +26,9 @@ ATargetPawn::ATargetPawn()
     };
     static FConstructorStatics ConstructorStatics;
 
-    _vehicle.build(this, FrameStatics.mesh.Get());
+    _frameMesh = FrameStatics.mesh.Get();
+
+    _vehicle.build(this, _frameMesh);
 }
 
 ATargetPawn::~ATargetPawn()
@@ -49,4 +51,9 @@ void ATargetPawn::EndPlay(const EEndPlayReason::Type EndPlayReason)
 void ATargetPawn::Tick(float DeltaSeconds) 
 {
     SetActorLocation(_targetManager->getLocation() * 100); // m => cm
+}
+        
+FBox ATargetPawn::getBoundingBox(void)
+{
+    return _frameMesh->GetBoundingBox();
 }

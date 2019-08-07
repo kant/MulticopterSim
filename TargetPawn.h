@@ -24,6 +24,8 @@
 UCLASS(Config=Game)
 class ATargetPawn : public APawn
 {
+    friend class FEventCameraManager;
+
     private:
 
 		GENERATED_BODY()
@@ -34,6 +36,12 @@ class ATargetPawn : public APawn
         Vehicle _vehicle;
 
         FTargetManager * _targetManager = NULL;
+
+        UStaticMesh * _frameMesh = NULL;
+
+    protected:
+
+        FBox getBoundingBox(void);
 
     public:
 
