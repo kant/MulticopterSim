@@ -19,11 +19,13 @@ class FEventCameraManager : public FThreadedManager {
         APawn * _vehiclePawn = NULL;
         ATargetPawn * _targetPawn = NULL;
 
-        Davis346 davis;
+        Davis346 * _davis = NULL;
 
-        static FVector getLocation(APawn * pawn)
+        static Davis346::location_t getLocation(APawn * pawn)
         {
-            return pawn->GetActorLocation() / 100; // cm => m
+            FVector fv = pawn->GetActorLocation() / 100; // cm => m
+            Davis346::location_t loc = {fv.X, fv.Y, fv.Z};
+            return loc;
         }
 
     public:
@@ -33,18 +35,25 @@ class FEventCameraManager : public FThreadedManager {
         {
             _vehiclePawn = vehiclePawn;
             _targetPawn  = targetPawn;
+
+            FBox targetBox = _targetPawn->getBoundingBox();
+            FVector targetSize = targetBox.GetSize() / 100;
+
+            _davis = new Davis346(targetSize.X); // assume a spherical cow
+        }
+
+        ~FEventCameraManager()
+        {
+            delete _davis;
         }
 
         void performTask(double currentTime)
         {
-			FVector vehicleLocation = getLocation(_vehiclePawn);
-			FVector targetLocation = getLocation(_targetPawn);
-            FBox targetBox = _targetPawn->getBoundingBox();
-            FVector targetSize = targetBox.GetSize() / 100;
+            Davis346::location_t vehicleLocation = getLocation(_vehiclePawn);
+            Davis346::location_t targetLocation = getLocation(_targetPawn);
 
-			debug("vehicle: %+3.3f %+3.3f %+3.3f    target: %+3.3f %+3.3f %+3.3f size = %3.3f %3.3f %3.3f",
-				vehicleLocation.X, vehicleLocation.Y, vehicleLocation.Z,
-				targetLocation.X, targetLocation.Y, targetLocation.Z,
-                targetSize.X, targetSize.Y, targetSize.Z);
+			debug("vehicle: %+3.3f %+3.3f %+3.3f    target: %+3.3f %+3.3f %+3.3f",
+				vehicleLocation.x, vehicleLocation.y, vehicleLocation.z,
+				targetLocation.x, targetLocation.y, targetLocation.z);
         }
 }; 

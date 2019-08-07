@@ -23,8 +23,15 @@ class Davis346 {
             uint16_t x;
             uint16_t y;
 
-
         } event_t;
+
+        typedef struct {
+
+            double x;
+            double y;
+            double z;
+
+        } location_t;
 
     private:
 
@@ -33,15 +40,23 @@ class Davis346 {
         static constexpr double FOV_H = 70.8;
         static constexpr double FOV_V = 56.2;
 
+        // Assume a spherical cow
+        double _targetSize = 0;
+
         queue<event_t> _eventq;
 
     public:
         
-        Davis346(void)
+        Davis346(double targetSize)
         {
+            _targetSize = targetSize;
         }
 
         ~Davis346(void)
+        {
+        }
+
+        void update(location_t & vehicleLocation, location_t & targetLocation)
         {
         }
 
