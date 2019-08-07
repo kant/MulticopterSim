@@ -11,6 +11,8 @@
 #include <queue>
 using namespace std;
 
+#include "../MainModule/Utils.hpp"
+
 class Davis346 {
 
     public:
@@ -56,8 +58,11 @@ class Davis346 {
         {
         }
 
-        void update(location_t & vehicleLocation, location_t & targetLocation)
+        void update(const location_t & vehicleLocation, const location_t & targetLocation)
         {
+			debug("vehicle: %+3.3f %+3.3f %+3.3f    target: %+3.3f %+3.3f %+3.3f",
+				vehicleLocation.x, vehicleLocation.y, vehicleLocation.z,
+				targetLocation.x, targetLocation.y, targetLocation.z);
         }
 
         event_t dequeueEvent(void)

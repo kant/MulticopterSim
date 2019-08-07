@@ -21,7 +21,7 @@ class FEventCameraManager : public FThreadedManager {
 
         Davis346 * _davis = NULL;
 
-        static Davis346::location_t getLocation(APawn * pawn)
+        static const Davis346::location_t getLocation(APawn * pawn)
         {
             FVector fv = pawn->GetActorLocation() / 100; // cm => m
             Davis346::location_t loc = {fv.X, fv.Y, fv.Z};
@@ -49,11 +49,6 @@ class FEventCameraManager : public FThreadedManager {
 
         void performTask(double currentTime)
         {
-            Davis346::location_t vehicleLocation = getLocation(_vehiclePawn);
-            Davis346::location_t targetLocation = getLocation(_targetPawn);
-
-			debug("vehicle: %+3.3f %+3.3f %+3.3f    target: %+3.3f %+3.3f %+3.3f",
-				vehicleLocation.x, vehicleLocation.y, vehicleLocation.z,
-				targetLocation.x, targetLocation.y, targetLocation.z);
+            _davis->update(getLocation(_vehiclePawn), getLocation(_targetPawn));
         }
 }; 
