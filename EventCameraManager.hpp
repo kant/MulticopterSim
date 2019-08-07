@@ -9,6 +9,7 @@
 #pragma once
 
 #include "../MainModule/ThreadedManager.hpp"
+#include "../../Extras/dvssim/Davis346Sim.hpp"
 #include "TargetPawn.h"
 #include "Davis346Sim.hpp"
 
