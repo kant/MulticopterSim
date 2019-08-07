@@ -49,7 +49,7 @@ void AEventCameraPawn::EndPlay(const EEndPlayReason::Type EndPlayReason)
 {
     _phantom.EndPlay();
     
-    _eventCameraManager = (FEventCameraManager *)FThreadedManager::stopThreadedManager(_eventCameraManager);
+    FThreadedManager::stopThread((FThreadedManager **)&_eventCameraManager);
 
     Super::EndPlay(EndPlayReason);
 }

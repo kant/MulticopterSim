@@ -15,7 +15,7 @@
 #include <math.h>
 
 #include "../MainModule/Vehicle.hpp"
-#include "LorenzTargetManager.hpp"
+#include "../MainModule/TargetManager.hpp"
 
 #include "CoreMinimal.h"
 #include "GameFramework/Pawn.h"
@@ -33,7 +33,7 @@ class ATargetPawn : public APawn
 
         Vehicle _vehicle;
 
-        FLorenzTargetManager * _targetManager = NULL;
+        FTargetManager * _targetManager = NULL;
 
     public:
 

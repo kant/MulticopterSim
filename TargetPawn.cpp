@@ -31,7 +31,7 @@ ATargetPawn::ATargetPawn()
 
 ATargetPawn::~ATargetPawn()
 {
-    _targetManager = (FLorenzTargetManager *)FThreadedManager::stopThreadedManager(_targetManager);
+    FThreadedManager::stopThread((FThreadedManager **)&_targetManager);
 }
 
 void ATargetPawn::BeginPlay()
