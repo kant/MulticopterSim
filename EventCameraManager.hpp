@@ -22,10 +22,10 @@ class FEventCameraManager : public FThreadedManager {
 
         Davis346 * _davis = NULL;
 
-        static const Davis346::location_t getLocation(APawn * pawn)
+        static const Davis346::Location getLocation(APawn * pawn)
         {
             FVector fv = pawn->GetActorLocation() / 100; // cm => m
-            Davis346::location_t loc = {fv.X, fv.Y, fv.Z};
+            Davis346::Location loc(fv.X, fv.Y, fv.Z);
             return loc;
         }
 
