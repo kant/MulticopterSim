@@ -14,7 +14,7 @@
 #include "EventCameraManager.hpp"
 #include "TargetPawn.h"
 
-#include "../../Extras/dvssim/Davis346Display.hpp"
+#include "dvssim/cpp/Davis346Display.hpp"
 
 #include "CoreMinimal.h"
 #include "GameFramework/Pawn.h"

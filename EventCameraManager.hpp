@@ -9,9 +9,9 @@
 #pragma once
 
 #include "../MainModule/ThreadedManager.hpp"
-#include "../../Extras/dvssim/Davis346Sim.hpp"
 #include "TargetPawn.h"
-#include "../../Extras/dvssim/Davis346Sim.hpp"
+#include "dvssim/cpp/Davis346Sim.hpp"
+#include "dvssim/cp//Davis346Sim.hpp"
 
 class FEventCameraManager : public FThreadedManager {
 
