@@ -13,8 +13,6 @@ AEventCameraPawn::AEventCameraPawn()
 {
     _phantom.build(this);
 
-    _cameraImage = cv::Mat::zeros(CAMERA_ROWS, CAMERA_COLS, CV_8UC3);
-
     _eventCameraManager = NULL;
 }
 
@@ -59,8 +57,7 @@ void AEventCameraPawn::Tick(float DeltaSeconds)
 {
     _phantom.Tick();
 
-    cv::imshow("EventCamera", _cameraImage);
-    cv::waitKey(1);
+    _display.displayEvents();
 
     Super::Tick(DeltaSeconds);
 }

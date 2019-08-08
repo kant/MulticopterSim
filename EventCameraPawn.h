@@ -14,7 +14,7 @@
 #include "EventCameraManager.hpp"
 #include "TargetPawn.h"
 
-#include <opencv2/highgui/highgui.hpp>
+#include "../../Extras/dvssim/Davis346Display.hpp"
 
 #include "CoreMinimal.h"
 #include "GameFramework/Pawn.h"
@@ -33,12 +33,7 @@ class FLIGHTMODULE_API AEventCameraPawn : public APawn {
 
         FEventCameraManager * _eventCameraManager = NULL;
 
-        // For displaying camera events
-
-        const uint16_t CAMERA_COLS = 346;
-        const uint16_t CAMERA_ROWS = 260;
-
-        cv::Mat _cameraImage;
+        Davis346Display _display;
 
     protected:
 
