@@ -11,7 +11,7 @@
 #include "../MainModule/ThreadedManager.hpp"
 #include "TargetPawn.h"
 #include "dvssim/cpp/Davis346Sim.hpp"
-#include "dvssim/cp//Davis346Sim.hpp"
+#include "dvssim/cpp//Davis346Sim.hpp"
 
 class FEventCameraManager : public FThreadedManager {
 
