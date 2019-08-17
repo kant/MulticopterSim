@@ -38,7 +38,7 @@ void ANullPhantomPawn::EndPlay(const EEndPlayReason::Type EndPlayReason)
 // Called automatically on main thread
 void ANullPhantomPawn::Tick(float DeltaSeconds)
 {
-    _phantom.Tick();
+    _phantom.Tick(DeltaSeconds);
 
     Super::Tick(DeltaSeconds);
 }
