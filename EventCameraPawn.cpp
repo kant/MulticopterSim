@@ -55,7 +55,7 @@ void AEventCameraPawn::EndPlay(const EEndPlayReason::Type EndPlayReason)
 // Called automatically on main thread
 void AEventCameraPawn::Tick(float DeltaSeconds)
 {
-    _phantom.Tick();
+    _phantom.Tick(DeltaSeconds);
 
     _display.displayEvents();
 
