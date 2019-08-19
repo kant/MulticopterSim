@@ -38,7 +38,7 @@ void ASocketPhantomPawn::EndPlay(const EEndPlayReason::Type EndPlayReason)
 // Called automatically on main thread
 void ASocketPhantomPawn::Tick(float DeltaSeconds)
 {
-    _phantom.Tick();
+    _phantom.Tick(DeltaSeconds);
 
     Super::Tick(DeltaSeconds);
 }
