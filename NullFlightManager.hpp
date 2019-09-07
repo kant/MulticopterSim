@@ -12,17 +12,12 @@
 
 class FNullFlightManager : public FFlightManager {
 
-    private:
-
-        bool _running = false;
-
     public:
 
         // Constructor
         FNullFlightManager(MultirotorDynamics * dynamics) 
             : FFlightManager(dynamics) 
         {
-            _running = true;
         }
 
         virtual ~FNullFlightManager(void)
@@ -33,12 +28,7 @@ class FNullFlightManager : public FFlightManager {
         {
             bool high = state.pose.location[2] < -3; // NED!
 
-            if (high) {
-                _running = false;
-            }
-
             for (uint8_t i=0; i<_motorCount; ++i) {
-                //motorvals[i] = _running ? 0.6 : 0;
                 motorvals[i] = high ? 0 : 0.6;
             }
         }
